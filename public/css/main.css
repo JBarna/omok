@@ -11,8 +11,9 @@ a {
     background-image: url('../images/Board.png');
     width: 397px;
     height: 390px;
+    cursor: none;
 }
 
 .gamepiece{
-    postion: absolute;
+    position: absolute;
 }
