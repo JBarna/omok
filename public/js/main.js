@@ -1,3 +1,6 @@
+//Global Variables
+var myTurn = true;
+
 var snapToGrid = function(x, y){
     var gridsize = 24;
     var xLoc = Math.floor(x/gridsize);
@@ -9,12 +12,15 @@ var snapToGrid = function(x, y){
     /*the 30 and 27 are the offset for the space before the grid in the picture*/
     return [xLoc * gridsize + 30, yLoc * gridsize + 27];
 }
+var createCursorPiece= function(){
+    var $hoverpiece = $('<img class="gamepiece tempPiece" src="images/slime.png" />');
+    $('#board ul').append($hoverpiece);
+}
 
 $(document).ready(function(){
     /*On Hover of the board */
     $('body').on('mouseenter', '#board',function(){
-        var $hoverpiece = $('<img class="gamepiece" src="images/mushroom.png" />');
-        $('#board ul').append($hoverpiece);
+        createCursorPiece();
     });
     $('body').on('mousemove','#board',function(event){
         var xOff = $('#board').offset().left;
@@ -27,9 +33,19 @@ $(document).ready(function(){
         $('#board img:last-child').css('left', coord[0] - 11 + xOff);
         
     });
-    $('body').on('mouseleave','#board' ,function(){
+    
+    $('body').on('mouseleave','#board',function(){
         $('#board img:last-child').remove();
     });  
+    
+//    On Click to play!
+    $('body').on('click', '#board', function(){
+        if (myTurn){
+        $('#board img:last-child').removeClass('tempPiece');
+        createCursorPiece();
+        myTurn = false;
+        }
+    });
 });
 
 
