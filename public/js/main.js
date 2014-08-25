@@ -18,7 +18,7 @@ var snapToGrid = function(x, y){
     return [xLoc * gridsize + 30, yLoc * gridsize + 27];
 }
 var createCursorPiece= function(){
-    var $hoverpiece = $('<img class="gamepiece tempPiece" src="images/slime.png" />');
+    var $hoverpiece = $('<img class="gamepiece tempPiece" src="/images/blocktopus.png" />');
     $('#board ul').append($hoverpiece);
 }
 
