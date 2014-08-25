@@ -59,7 +59,7 @@ function Game() {
             
             /*Ajax call! Send the server the move*/
             $.ajax({
-                url: '/gamemove',
+                url: '/game/gamemove',
                 type: 'POST',
                 dataType: 'json',
                 data: JSON.stringify({moveX: gamemoveX, moveY: gamemoveY}),
@@ -76,7 +76,18 @@ function Game() {
             }); // End ajax
         }
     }
-    
+    /*Parent will be the element we append our board to*/
+    this.createGame = function(parent){
+
+        $('body').on('mouseenter', '#board', this.mouseenter);
+        $('body').on('mousemove','#board', this.mousemove);
+
+        $('body').on('mouseleave','#board', this.mouseleave);  
+
+        /*On Click to play!*/
+        $('body').on('click', '#board', this.click); //end click
+        
+    }
 }
 
     
