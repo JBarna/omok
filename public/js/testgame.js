@@ -1,6 +1,7 @@
-var game = require('./game.js');
+var Game = require('./game.js');
+var game = new Game();
 
-var board = new game();
+var board = game.board;
 
 board.makeMove(3, 1, 2);
 board.makeMove(4,1, 2);
