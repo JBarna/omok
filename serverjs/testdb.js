@@ -7,9 +7,9 @@ var db = new dbhelper();
 
 //db.createGame(game,"wesdfe", true);
 
-var newgame = db.getGame("wesdfe");
+var newgame = db.getGame("wesdfe"); //get the gameobject that I have created in the database
 
 process.nextTick(function(){
-    console.log(newgame);
+    console.log(newgame); //prints undefined!!!
 });
     
