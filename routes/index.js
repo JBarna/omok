@@ -9,7 +9,7 @@ router.get('/', function(req, res) {
 router.post('/gamemove', function(req, res){
     console.log("He has moved at gridX: " + req.body.moveX + " and gridY: " + req.body.moveY);
     
-    res.send(JSON.stringify({hi: "Hello!"}));
+    res.send(JSON.stringify({yourip: req.ip}));
 });
 
 module.exports = router;
