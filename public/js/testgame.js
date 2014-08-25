@@ -1,4 +1,4 @@
-var Game = require('./game.js');
+var Game = require('./servergame.js');
 var game = new Game();
 
 var board = game.board;

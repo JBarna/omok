@@ -1,74 +1,14 @@
-//Global Variables
-var myTurn = true;
-var gamemoveX;
-var gamemoveY;
-
-var snapToGrid = function(x, y){
-    var gridsize = 24;
-    var xLoc = Math.floor(x/gridsize);
-    var yLoc = Math.floor(y/gridsize);
-    if (xLoc > 14)
-        xLoc = 14;
-    if (yLoc > 14)
-        yLoc = 14;
-    
-    gamemoveX = xLoc;
-    gamemoveY = yLoc;
-    /*the 30 and 27 are the offset for the space before the grid in the picture*/
-    return [xLoc * gridsize + 30, yLoc * gridsize + 27];
-}
-var createCursorPiece= function(){
-    var $hoverpiece = $('<img class="gamepiece tempPiece" src="/images/blocktopus.png" />');
-    $('#board ul').append($hoverpiece);
-}
-
 $(document).ready(function(){
-    /*On Hover of the board */
-    $('body').on('mouseenter', '#board',function(){
-        createCursorPiece();
-    });
-    $('body').on('mousemove','#board',function(event){
-        var xOff = $('#board').offset().left;
-        var yOff = $("#board").offset().top;
-        
-        var coord = snapToGrid(event.pageX - xOff, 
-            event.pageY - yOff);
-        
-        $('#board img:last-child').css('top', coord[1] - 11 + yOff);
-        $('#board img:last-child').css('left', coord[0] - 11 + xOff);
-        
-    });
+    var game = new Game();
     
-    $('body').on('mouseleave','#board',function(){
-        $('#board img:last-child').remove();
-    });  
+    /*On Hover of the board */
+    $('body').on('mouseenter', '#board', game.mouseenter);
+    $('body').on('mousemove','#board', game.mousemove);
+    
+    $('body').on('mouseleave','#board', game.mouseleave);  
     
     /*On Click to play!*/
-    $('body').on('click', '#board', function(){
-        if (myTurn){
-            $('#board img:last-child').removeClass('tempPiece');
-            createCursorPiece();
-            //myTurn = false;
-            
-            /*Ajax call! Send the server the move*/
-            $.ajax({
-                url: '/gamemove',
-                type: 'POST',
-                dataType: 'json',
-                data: JSON.stringify({moveX: gamemoveX, moveY: gamemoveY}),
-                contentType: "application/json",
-                complete: function(){
-                    console.log("We have completed the transfer")},
-                success: function(data){
-                    console.log(data);
-                    console.log("Success!");
-                },
-                error: function(err){
-                    console.log(err);
-                }
-            }); // End ajax
-        }
-    }); //end click
+    $('body').on('click', '#board', game.click); //end click
     
     
 });
