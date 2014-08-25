@@ -6,4 +6,10 @@ router.get('/', function(req, res) {
   res.render('index', { pageTitle: 'Omok', body: "Steven is stupid" });
 });
 
+router.post('/gamemove', function(req, res){
+    console.log("He has moved at gridX: " + req.body.moveX + " and gridY: " + req.body.moveY);
+    
+    res.send(JSON.stringify({hi: "Hello!"}));
+});
+
 module.exports = router;

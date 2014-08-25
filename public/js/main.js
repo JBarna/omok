@@ -1,5 +1,7 @@
 //Global Variables
 var myTurn = true;
+var gamemoveX;
+var gamemoveY;
 
 var snapToGrid = function(x, y){
     var gridsize = 24;
@@ -9,6 +11,9 @@ var snapToGrid = function(x, y){
         xLoc = 14;
     if (yLoc > 14)
         yLoc = 14;
+    
+    gamemoveX = xLoc;
+    gamemoveY = yLoc;
     /*the 30 and 27 are the offset for the space before the grid in the picture*/
     return [xLoc * gridsize + 30, yLoc * gridsize + 27];
 }
@@ -38,15 +43,36 @@ $(document).ready(function(){
         $('#board img:last-child').remove();
     });  
     
-//    On Click to play!
+    /*On Click to play!*/
     $('body').on('click', '#board', function(){
         if (myTurn){
-        $('#board img:last-child').removeClass('tempPiece');
-        createCursorPiece();
-        myTurn = false;
+            $('#board img:last-child').removeClass('tempPiece');
+            createCursorPiece();
+            //myTurn = false;
+            
+            /*Ajax call! Send the server the move*/
+            $.ajax({
+                url: '/gamemove',
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({moveX: gamemoveX, moveY: gamemoveY}),
+                contentType: "application/json",
+                complete: function(){
+                    console.log("We have completed the transfer")},
+                success: function(data){
+                    console.log(data);
+                    console.log("Success!");
+                },
+                error: function(err){
+                    console.log(err);
+                }
+            }); // End ajax
         }
-    });
+    }); //end click
+    
+    
 });
+
 
 
     
