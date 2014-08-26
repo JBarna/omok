@@ -1,15 +1,25 @@
 var dbhelper = require('./dbhelper');
 var Game = require('./servergame.js');
-var game = new Game();
-
-
 var db = new dbhelper();
 
-//db.createGame(game,"wesdfe", true);
+/*//create game
+var game = new Game();
 
-var newgame = db.getGame("wesdfe"); //get the gameobject that I have created in the database
+game.createBoard();
 
-process.nextTick(function(){
-    console.log(newgame); //prints undefined!!!
+//create game in database
+db.createGame("aaaaa", game.getBoard(), true);*/
+
+
+
+//make move in game
+//first we will access the game through db helper
+db.getGame("aaaaa", function(err, board){
+    var game = new Game();
+    game.loadBoard(board);
+    game.printBoard();
+    /*game.makeMove(1,1,2);
+    db.saveGame("aaaaa", game.getBoard());*/
+    
 });
     

@@ -1,15 +1,32 @@
 function Board() {
+    /*Instance variable. the board!*/
     var board = new Array(15);
     for (var i = 0; i < board.length; i++)
         board[i] = new Array(15);
     
-    //initialize values
-    for (var i = 0; i < board.length; i++){
-        for (var j = 0; j < board[i].length; j++){
-            board[i][j] = 0;
+    /*
+    Creates board. Saves the board in the database
+        if multiplayer = false, then singleplayer
+    */
+    this.createBoard = function(){
+        //initialize values
+        for (var i = 0; i < board.length; i++){
+            for (var j = 0; j < board[i].length; j++){
+                board[i][j] = 0;
+            }
         }
     }
     
+    
+    
+    this.getBoard = function(){
+        return board;
+    }
+    
+    this.loadBoard = function(newBoard){
+        board = newBoard;
+    }
+        
     this.printBoard = function(){
         for (var i = 0; i < board.length; i++){
             for (var j = 0; j < board[i].length; j++){
@@ -56,7 +73,8 @@ function Board() {
     }
 }
 
-function Player(){
+/*until further notice, I don't need player or game object*/
+/*function Player(){
     this.setIP = function(IP){
         this.IP = IP;
     }
@@ -72,6 +90,6 @@ function Game() {
     this.board = new Board();
     this.player1 = new Player();
     this.player2 = new Player();
-}
+}*/
 
-module.exports = Game;
+module.exports = Board;

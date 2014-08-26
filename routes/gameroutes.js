@@ -3,7 +3,7 @@ var router = express.Router();
 
 
 router.get('/:gameid', function(req, res){
-    res.render('gameroom', {pageTitle: 'Omok Game', 'includeClientGame': true});
+    res.render('gameroom', {pageTitle: 'Omok Game', js: {'includeClientGame': true}});
 });
 
 

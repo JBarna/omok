@@ -15,25 +15,38 @@ function dbhelper(){
         });
     }
     
-    /*public create game method*/
-    this.createGame = function(serverGame, gameID, multiplayer){
+    /*public retreive board object with gameID*/
+    this.getGame = function(gameID, next){
         connectHelper('game', function(err, collection){
-            var newGame = {'gameID': gameID, 'gameOBJ': serverGame, 'multiplayer': multiplayer, 'numPlayers': 1};
-            var options = {w:1};
-            collection.insert(newGame, options, function(err, results){
-                console.log(results);
+            collection.findOne({'gameID': gameID}, {'board': 1, '_id': 0}, function(err, item){
+                if (next)
+                    next(err, item.board);
             });
         });
     }
     
-    /*public retreive game object with gameID*/
-    this.getGame = function(gameID){
+    /*public create game method*/
+    this.createGame = function(gameID, boardArray, multiplayer){
         connectHelper('game', function(err, collection){
-            collection.findOne({'gameID': gameID}, {'gameOBJ': 1, '_id': 0}, function(err, item){
-                console.log(item);
-                return item;
+            var newGame = {'gameID': gameID, 'board': boardArray, 'multiplayer': multiplayer, 'numPlayers': 1};
+            var options = {w:1};
+            collection.insert(newGame, options, function(err, results){
+                //console.log(results);
             });
         });
+    }
+    
+    /*public save game method*/
+    this.saveGame = function(gameID, boardArray){
+        connectHelper('game', function(err, collection){
+            var query = {'gameID': gameID};
+            var update = { '$set': {'board': boardArray}};
+            var options = {w:1, wtimeout:5000, upsert:false};
+            collection.update(query, update, options, function(err, results){
+                console.log(results);
+            });
+        });
+        
     }
 }
 
