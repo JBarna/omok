@@ -6,7 +6,7 @@ function dbhelper(){
     
     /*private connect helper method*/
     var connectHelper = function(collectionName, next){
-        mongo.connect("mongodb://localhost/omok", function(err, db){
+        mongo.connect(process.env.MONGOLAB_URI || "mongodb://localhost/omok", function(err, db){
             db.collection(collectionName, function(err, collection){
                 if (next)
                     next(err, collection);
@@ -19,8 +19,12 @@ function dbhelper(){
     this.getGame = function(gameID, next){
         connectHelper('game', function(err, collection){
             collection.findOne({'gameID': gameID}, {'board': 1, '_id': 0}, function(err, item){
-                if (next)
+                /*console.log("item: ");
+                console.log(item);*/
+                if (item)
                     next(err, item.board);
+                else
+                    next(err, null);
             });
         });
     }

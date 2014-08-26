@@ -4,12 +4,29 @@ var router = express.Router();
 var dbhelper = require('../serverjs/dbhelper');
 var Game = require('../serverjs/servergame');
 
-
+/*Game room--------------------------------------------*/
 router.get('/:gameid', function(req, res){
-    res.render('gameroom', {pageTitle: 'Omok Game', js: {'includeClientGame': true}});
+    //check to see if there is a game with that ID
+    var db = new dbhelper();
+    
+    db.getGame(req.param('gameid'), function(err, game){
+        if (game){
+            //if we aren't currently ingame, we can join
+            if (!req.session.ingame){
+                req.session.playerID = 2;
+                req.session.ingame = true;
+                req.session.gameID = req.param('gameid');
+            }
+            res.render('gameroom', {pageTitle: 'Omok Game', js: {'includeClientGame': true}});
+        }
+        else
+            res.redirect('/');
+    });
+    
+    
 });
 
-/* POST game/creatgame
+/* POST game/creatgame--------------------------------
 Client wants to create a game.*/
 router.post('/creategame', function(req, res){
     
@@ -27,14 +44,21 @@ router.post('/creategame', function(req, res){
     var db = new dbhelper();
     db.createGame(ID, game.getBoard(), true);
     
+    //update session so the player is in game
+    req.session.ingame = true;
+    req.session.playerID = 1;
+    req.session.gameID = ID;
+    
     res.redirect('/game/' + ID);
 });
 
-/*send server the game move*/
+/*send server the game move-----------------------------------------*/
 router.post('/gamemove', function(req, res){
-    console.log("He has moved at gridX: " + req.body.moveX + " and gridY: " + req.body.moveY);
+    console.log(req.session.playerID + " has moved at gridX: " + req.body.moveX + " and gridY: " + req.body.moveY);
     
     res.send(JSON.stringify({yourip: req.ip}));
 });
+
+
 
 module.exports = router;

@@ -14,7 +14,7 @@ db.createGame("aaaaa", game.getBoard(), true);*/
 
 //make move in game
 //first we will access the game through db helper
-db.getGame("aaaaa", function(err, board){
+db.getGame("159e5433", function(err, board){
     var game = new Game();
     game.loadBoard(board);
     game.printBoard();
