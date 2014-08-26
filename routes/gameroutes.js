@@ -59,6 +59,21 @@ router.post('/gamemove', function(req, res){
     res.send(JSON.stringify({yourip: req.ip}));
 });
 
+/*Move check --- check to see if the other person has moved*/
+router.post('/movecheck', function(req, res){
+    if(!req.session.count){
+        req.session.count = 1;
+    } else
+        req.session.count = req.session.count + 1;
+    
+    console.log(req.session.count);
+    
+    if (req.session.count == 5)
+        res.send(JSON.stringify({myTurn: true}));
+    else
+        res.send(JSON.stringify({myTurn: false}));
+});
+
 
 
 module.exports = router;

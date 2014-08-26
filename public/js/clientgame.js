@@ -74,6 +74,28 @@ function Game() {
                     console.log(err);
                 }
             }); // End ajax
+            var clear;
+            
+            //begin timed ajax call to check for next move
+            var $check = function(){$.ajax({
+                url: '/game/movecheck',
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({type: 'waiting'}),
+                contentType: "application/json",
+                complete: function(){},
+                success: function(data){
+                    console.log(data.myTurn);
+                    clear();
+                },
+                error: function(err){
+                    console.log(err);
+                }
+            });} // End ajax
+            
+            clear = function(){clearInterval($check)};
+            setInterval($check, 5000);
+            
         }
     }
     /*Parent will be the element we append our board to*/
