@@ -7,10 +7,12 @@
   },
   "dependencies": {
     "body-parser": "~1.0.0",
+    "connect-mongo": "^0.4.1",
     "cookie-parser": "~1.0.1",
     "debug": "~0.7.4",
     "ejs": "~0.8.5",
     "express": "~4.2.0",
+    "express-session": "^1.7.6",
     "mongodb": "^1.4.8",
     "morgan": "~1.0.0",
     "static-favicon": "~1.0.0"
