@@ -77,7 +77,7 @@ function Game() {
             var clear;
             
             //begin timed ajax call to check for next move
-            var $check = function(){$.ajax({
+            $.ajax({
                 url: '/game/movecheck',
                 type: 'POST',
                 dataType: 'json',
@@ -91,10 +91,7 @@ function Game() {
                 error: function(err){
                     console.log(err);
                 }
-            });} // End ajax
-            
-            clear = function(){clearInterval($check)};
-            setInterval($check, 5000);
+            }); // End ajax
             
         }
     }
