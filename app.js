@@ -1,4 +1,6 @@
 var express = require('express');
+var app = express();
+var http = require('http').Server(app);
 var path = require('path');
 var favicon = require('static-favicon');
 var logger = require('morgan');
@@ -16,9 +18,8 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var gameroutes = require('./routes/gameroutes');
 
-//create app and mongo
+//mongo database
 var mongo = new MongoClient();
-var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -77,4 +78,4 @@ mongo.connect(process.env.MONGOLAB_URI || "mongodb://localhost/omok", function(e
 }); // end session
 
 
-module.exports = app;
+module.exports = http;
