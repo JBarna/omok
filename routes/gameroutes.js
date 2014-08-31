@@ -1,8 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io').listen(http);
 
 var dbhelper = require('../serverjs/dbhelper');
 var Game = require('../serverjs/servergame');
@@ -13,31 +10,26 @@ router.get('/:gameid', function(req, res){
     var db = new dbhelper();
     
     db.getGame(req.param('gameid'), function(err, game){
-        if (game){
-            //if we aren't currently ingame, we can join
-            if (!req.session.ingame){
-                req.session.playerID = 2;
-                req.session.ingame = true;
-                req.session.gameID = req.param('gameid');
+        if (game){ //if the game exists
+            //either not in game or player 1
+            if (!req.session.ingame || req.param('gameid') == req.session.gameID){
+                //If not in game. Set as player two
+                if (!req.session.ingame){
+                    req.session.playerID = 2;
+                    req.session.ingame = true;
+                    req.session.gameID = req.param('gameid');
+                }
                 
-                //set up socket.io connection
-                io.on('connection', function(socket){
-                    console.log("Player " + req.session.playerID + " has connected to game room " + req.session.gameID);
-                    
-                });
-                    
-                
-                //if we are in another game, redirect to our game
-            } else if (req.param('gameid') != req.session.gameID){ 
+            } else //if client is in another game, redirect back to that game
                 res.redirect('/game/' + req.session.gameID);
-            }
+            
+            //render the game page
             res.render('gameroom', {pageTitle: 'Omok Game', js: {'includeClientGame': true}});
         }
+        //the game does not exist, redirect to homepage
         else
             res.redirect('/');
     });
-    
-    
 });
 
 /* POST game/creatgame--------------------------------
