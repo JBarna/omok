@@ -1,5 +1,8 @@
 var express = require('express');
 var router = express.Router();
+var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io').listen(http);
 
 var dbhelper = require('../serverjs/dbhelper');
 var Game = require('../serverjs/servergame');
@@ -16,6 +19,17 @@ router.get('/:gameid', function(req, res){
                 req.session.playerID = 2;
                 req.session.ingame = true;
                 req.session.gameID = req.param('gameid');
+                
+                //set up socket.io connection
+                io.on('connection', function(socket){
+                    console.log("Player " + req.session.playerID + " has connected to game room " + req.session.gameID);
+                    
+                });
+                    
+                
+                //if we are in another game, redirect to our game
+            } else if (req.param('gameid') != req.session.gameID){ 
+                res.redirect('/game/' + req.session.gameID);
             }
             res.render('gameroom', {pageTitle: 'Omok Game', js: {'includeClientGame': true}});
         }
@@ -51,29 +65,6 @@ router.post('/creategame', function(req, res){
     
     res.redirect('/game/' + ID);
 });
-
-/*send server the game move-----------------------------------------*/
-router.post('/gamemove', function(req, res){
-    console.log(req.session.playerID + " has moved at gridX: " + req.body.moveX + " and gridY: " + req.body.moveY);
-    
-    res.send(JSON.stringify({yourip: req.ip}));
-});
-
-/*Move check --- check to see if the other person has moved*/
-router.post('/movecheck', function(req, res){
-    if(!req.session.count){
-        req.session.count = 1;
-    } else
-        req.session.count = req.session.count + 1;
-    
-    console.log(req.session.count);
-    
-    if (req.session.count == 5)
-        res.send(JSON.stringify({myTurn: true}));
-    else
-        res.send(JSON.stringify({myTurn: false}));
-});
-
 
 
 module.exports = router;

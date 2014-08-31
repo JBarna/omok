@@ -2,6 +2,7 @@
 var myTurn = true;
 var gamemoveX;
 var gamemoveY;
+var socket;
 
 function Game() {
     /*Private Instance Variables*/
@@ -96,8 +97,10 @@ function Game() {
         }
     }
     /*Parent will be the element we append our board to*/
-    this.createGame = function(parent){
-
+    this.createGame = function(){
+        
+        //connect to server with socket.io
+        socket = io();
         $('body').on('mouseenter', '#board', this.mouseenter);
         $('body').on('mousemove','#board', this.mousemove);
 
