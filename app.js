@@ -19,10 +19,10 @@ var mongoStore = require('connect-mongo')({session: expressSession});
 
 
 //routes
-var routes = require('./routes/index');
-var users = require('./routes/users');
-var gameroutes = require('./routes/gameroutes');
-var socket = require('./routes/socket.js');
+var routes = require('./controller/index');
+var users = require('./controller/users');
+var gameroutes = require('./controller/gameroutes');
+var socket = require('./controller/socket.js');
 
 //mongo database
 var mongo = new MongoClient();

@@ -1,5 +1,5 @@
-var dbhelper = require('../serverjs/dbhelper');
-var Game = require('../serverjs/servergame');
+var dbhelper = require('../model/dbhelper');
+var Game = require('../model/servergame');
 
 exports.gameroom = function(io){
     //return express get function

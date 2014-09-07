@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
-var dbhelper = require('../serverjs/dbhelper');
-var Game = require('../serverjs/servergame');
+var dbhelper = require('../model/dbhelper');
+var Game = require('../model/servergame');
 
 /* POST game/creatgame--------------------------------
 Client wants to create a game.*/
