@@ -73,23 +73,4 @@ function Board() {
     }
 }
 
-/*until further notice, I don't need player or game object*/
-/*function Player(){
-    this.setIP = function(IP){
-        this.IP = IP;
-    }
-    
-    this.setID = function(ID){
-        this.ID = ID;
-    }
-    
-}
-    
-
-function Game() {
-    this.board = new Board();
-    this.player1 = new Player();
-    this.player2 = new Player();
-}*/
-
 module.exports = Board;

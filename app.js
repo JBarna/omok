@@ -1,7 +1,11 @@
+//express framework
 var express = require('express');
 var app = express();
+
+//http server and socketio
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+//other middleware
 var path = require('path');
 var favicon = require('static-favicon');
 var logger = require('morgan');
@@ -18,6 +22,7 @@ var mongoStore = require('connect-mongo')({session: expressSession});
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var gameroutes = require('./routes/gameroutes');
+var socket = require('./routes/socket.js');
 
 //mongo database
 var mongo = new MongoClient();
@@ -44,6 +49,7 @@ mongo.connect(process.env.MONGOLAB_URI || "mongodb://localhost/omok", function(e
 
     app.use('/', routes);
     app.use('/game', gameroutes);
+    app.get('/gameroom/:gameid', socket.gameroom(io));
     app.use('/users', users);
 
     /// catch 404 and forward to error handler

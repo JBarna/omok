@@ -2,7 +2,7 @@
 var myTurn = true;
 var gamemoveX;
 var gamemoveY;
-var socket;
+var server;
 
 function Game() {
     /*Private Instance Variables*/
@@ -100,7 +100,11 @@ function Game() {
     this.createGame = function(){
         
         //connect to server with socket.io
-        socket = io();
+        server = io();
+        server.on('msg', function(msg){
+            console.log(msg);
+        });
+        
         $('body').on('mouseenter', '#board', this.mouseenter);
         $('body').on('mousemove','#board', this.mousemove);
 
