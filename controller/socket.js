@@ -17,7 +17,12 @@ exports.gameroom = function(io){
                 io.to(gameid).emit('gamemove', {'PlayerID': req.session.playerID, 'data': move});
             });
 
+            socket.on('disconnect', function(){
+                console.log("user disconnected");
+                socket.leave(gameid);
+            });
             console.log("a user has connected to game room: " + gameid);
+            
             
         });
 

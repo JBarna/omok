@@ -54,8 +54,8 @@ function Game() {
     
     this.click = function(){
         if (myTurn){
-            $('#board img:last-child').removeClass('tempPiece');
-            createCursorPiece();
+            /*$('#board img:last-child').removeClass('tempPiece');
+            createCursorPiece();*/
             //myTurn = false;
             
             socket.emit('gamemove', {moveX: gamemoveX, moveY: gamemoveY});     
@@ -69,6 +69,8 @@ function Game() {
         
         socket.on('gamemove', function(move){
             console.log(move);
+            $('#board img:last-child').removeClass('tempPiece');
+            createCursorPiece();
         });
         
         $('body').on('mouseenter', '#board', this.mouseenter);
