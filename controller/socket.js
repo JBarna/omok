@@ -10,7 +10,15 @@ exports.gameroom = function(io){
         // set up socket connection
         io.on('connection', function(socket){
             socket.join(gameid);
-            setInterval(function(){socket.to(gameid).emit('msg', "hello");}, 1000);
+            
+            socket.on('gamemove', function(move){
+                console.log(move);
+                //emit the move to all the players
+                io.to(gameid).emit('gamemove', {req.session.playerID, move})
+            });
+            
+            
+            
             console.log("a user has connected to game room: " + gameid);
             
         });
@@ -36,17 +44,13 @@ exports.gameroom = function(io){
         }
         
         var ifgamedoesnotexist = function(){
-        //the game does not exist, redirect to homepage
-        res.redirect('/');
+            //the game does not exist, redirect to homepage
+            res.redirect('/');
         };
         
         model.checkGameExistence(gameid, ifGameExists, ifgamedoesnotexist); 
     };
 }
-
-/*exports.gamemove = function(io){
-    //return express function for post
-    return function(req, res){*/
         
     
     

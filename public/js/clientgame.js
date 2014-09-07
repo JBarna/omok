@@ -2,7 +2,7 @@
 var myTurn = true;
 var gamemoveX;
 var gamemoveY;
-var server;
+var socket;
 
 function Game() {
     /*Private Instance Variables*/
@@ -58,17 +58,17 @@ function Game() {
             createCursorPiece();
             //myTurn = false;
             
-            
-            socket.emit('gamemove', {moveX: gamemoveX, moveY: gamemoveY});    
+            socket.emit('gamemove', {moveX: gamemoveX, moveY: gamemoveY});     
         }
     }
     /*Parent will be the element we append our board to*/
     this.createGame = function(){
         
         //connect to server with socket.io
-        server = io();
-        server.on('msg', function(msg){
-            console.log("hello!");
+        socket = io();
+        
+        socket.on('gamemove', function(move){
+            console.log(move);
         });
         
         $('body').on('mouseenter', '#board', this.mouseenter);
@@ -78,6 +78,8 @@ function Game() {
 
         /*On Click to play!*/
         $('body').on('click', '#board', this.click); //end click
+        
+        
         
     }
 }
