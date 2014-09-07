@@ -27,10 +27,26 @@ exports.createGame = function(){
     var board = game.getBoard();
     
     //save board in database
-    var db = new dbhelper();
-    db.createGame(ID, board, true);
+    dbhelper.createGame(ID, board, true);
     
     return ID;
+};
+
+/*checkGameExistence----------------------------------------
+Checks db to see if game exists
+calls a function if yes or no because we can't 
+return I guess
+*/
+exports.checkGameExistence = function(gameID, ifyes, ifno){
+    dbhelper.getGame(gameID, function(err, game){
+        if (game){
+            if(ifyes)
+                ifyes();
+        } else{
+            if(ifno)
+                ifno();
+        }
+    });
 };
 
     

@@ -16,29 +16,31 @@ exports.gameroom = function(io){
         });
 
         //check to see if there is a game with that ID
-        var db = new dbhelper();
+        var ifGameExists = function(){ 
+            //either not in game or player 1
+            if (!req.session.ingame || gameid == req.session.gameID){
+                
+                //If not in game. Set as player two
+                //otherwise do nothing
+                if (!req.session.ingame){
+                    req.session.playerID = 2;
+                    req.session.ingame = true;
+                    req.session.gameID = gameid;
+                }
 
-        db.getGame(req.param('gameid'), function(err, game){
-            if (game){ //if the game exists
-                //either not in game or player 1
-                if (!req.session.ingame || req.param('gameid') == req.session.gameID){
-                    //If not in game. Set as player two
-                    if (!req.session.ingame){
-                        req.session.playerID = 2;
-                        req.session.ingame = true;
-                        req.session.gameID = req.param('gameid');
-                    }
+            } else //if client is in another game, redirect back to that game
+                res.redirect('/gameroom/' + req.session.gameID);
 
-                } else //if client is in another game, redirect back to that game
-                    res.redirect('/gameroom/' + req.session.gameID);
-
-                //render the game page
-                res.render('gameroom', {pageTitle: 'Omok Game', js: {'includeClientGame': true}});
-            }
-            //the game does not exist, redirect to homepage
-            else
-                res.redirect('/');
-        });
+            //render the game page
+            res.render('gameroom', {pageTitle: 'Omok Game', js: {'includeClientGame': true}});
+        }
+        
+        var ifgamedoesnotexist = function(){
+        //the game does not exist, redirect to homepage
+        res.redirect('/');
+        };
+        
+        model.checkGameExistence(gameid, ifGameExists, ifgamedoesnotexist); 
     };
 }
 
