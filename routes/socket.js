@@ -11,6 +11,7 @@ exports.gameroom = function(io){
             socket.join(gameid);
             setInterval(function(){socket.to(gameid).emit('msg', "hello");}, 1000);
             console.log("a user has connected to game room: " + gameid);
+            
         });
 
         //check to see if there is a game with that ID
@@ -40,9 +41,9 @@ exports.gameroom = function(io){
     };
 }
 
-exports.gamemove = function(io){
+/*exports.gamemove = function(io){
     //return express function for post
-    return function(req, res){
+    return function(req, res){*/
         
     
     

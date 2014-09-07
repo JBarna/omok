@@ -58,42 +58,8 @@ function Game() {
             createCursorPiece();
             //myTurn = false;
             
-            /*Ajax call! Send the server the move*/
-            $.ajax({
-                url: '/game/gamemove',
-                type: 'POST',
-                dataType: 'json',
-                data: JSON.stringify({moveX: gamemoveX, moveY: gamemoveY}),
-                contentType: "application/json",
-                complete: function(){
-                    console.log("We have completed the transfer")},
-                success: function(data){
-                    console.log(data);
-                    console.log("Success!");
-                },
-                error: function(err){
-                    console.log(err);
-                }
-            }); // End ajax
-            var clear;
             
-            //begin timed ajax call to check for next move
-            $.ajax({
-                url: '/game/movecheck',
-                type: 'POST',
-                dataType: 'json',
-                data: JSON.stringify({type: 'waiting'}),
-                contentType: "application/json",
-                complete: function(){},
-                success: function(data){
-                    console.log(data.myTurn);
-                    clear();
-                },
-                error: function(err){
-                    console.log(err);
-                }
-            }); // End ajax
-            
+            socket.emit('gamemove', {moveX: gamemoveX, moveY: gamemoveY});    
         }
     }
     /*Parent will be the element we append our board to*/
@@ -102,7 +68,7 @@ function Game() {
         //connect to server with socket.io
         server = io();
         server.on('msg', function(msg){
-            console.log(msg);
+            console.log("hello!");
         });
         
         $('body').on('mouseenter', '#board', this.mouseenter);
