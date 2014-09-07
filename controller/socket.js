@@ -16,9 +16,7 @@ exports.gameroom = function(io){
                 //emit the move to all the players
                 io.to(gameid).emit('gamemove', {'PlayerID': req.session.playerID, 'data': move});
             });
-            
-            
-            
+
             console.log("a user has connected to game room: " + gameid);
             
         });
