@@ -1,3 +1,9 @@
+/*
+servergame.js
+This class will provide functionality for the game on the server side
+You can create, load, make moves, check wins, 
+and export the board in array format.
+*/
 function Board() {
     /*Instance variable. the board!*/
     var board = new Array(15);

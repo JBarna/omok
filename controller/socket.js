@@ -1,5 +1,6 @@
 var dbhelper = require('../model/dbhelper');
 var Game = require('../model/servergame');
+var model = require('../model/model');
 
 exports.gameroom = function(io){
     //return express get function
@@ -29,7 +30,7 @@ exports.gameroom = function(io){
                     }
 
                 } else //if client is in another game, redirect back to that game
-                    res.redirect('/game/' + req.session.gameID);
+                    res.redirect('/gameroom/' + req.session.gameID);
 
                 //render the game page
                 res.render('gameroom', {pageTitle: 'Omok Game', js: {'includeClientGame': true}});
