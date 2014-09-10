@@ -5,6 +5,7 @@ var app = express();
 //http server and socketio
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+
 //other middleware
 var path = require('path');
 var favicon = require('static-favicon');
