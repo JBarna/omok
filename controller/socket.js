@@ -1,33 +1,36 @@
-var dbhelper = require('../model/dbhelper');
-var Game = require('../model/servergame');
 var model = require('../model/model');
 
 exports.gameroom = function(io){
+    //set up socket connection
+        io.on('connection', function(socket){
+            
+            socket.on('joinroom', function(room){
+                socket.room = room;
+                socket.join(room);
+                console.log("soemone has joined a room");
+                console.log(socket.room);
+            });
+            
+            
+            socket.on('gamemove', function(move){
+                console.log(move);
+                //emit the move to all the players
+                //io.to(gameid).emit('gamemove', {'PlayerID': req.session.playerID, 'data': move});
+            });
+
+            socket.on('disconnect', function(){
+                console.log("user disconnected");
+            });
+            
+            console.log("a user has connected");
+
+        });
+
     //return express get function
-    
     return function(req, res){
         var gameid = req.param('gameid');
-        console.log(req.session.ingame);
         // set up socket connection
-        if (!req.session.connectedToSocket){
-            req.session.connectedToSocket = true;
-            io.on('connection', function(socket){
-                socket.join(gameid);
-
-                socket.on('gamemove', function(move){
-                    console.log(move);
-                    //emit the move to all the players
-                    io.to(gameid).emit('gamemove', {'PlayerID': req.session.playerID, 'data': move});
-                });
-
-                socket.on('disconnect', function(){
-                    console.log("user disconnected");
-                    socket.leave(gameid);
-                });
-                console.log("a user has connected to game room: " + gameid);
-                
-            });
-        }
+        
 
         //check to see if there is a game with that ID
         var ifGameExists = function(){ 

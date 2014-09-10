@@ -64,6 +64,8 @@ socket = io();
 gameroom = window.location.pathname.split('/')[2]; 
 console.log(gameroom);
 
+socket.emit('joinroom', gameroom);
+
 $('body').on('mouseenter', '#board', mouseenter);
 $('body').on('mousemove','#board', mousemove);
 
