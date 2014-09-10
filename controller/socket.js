@@ -16,6 +16,7 @@ exports.gameroom = function(io){
                 console.log(move);
                 //emit the move to all the players
                 //io.to(gameid).emit('gamemove', {'PlayerID': req.session.playerID, 'data': move});
+                io.to(socket.room).emit('gamemove', {"hi": "hello"});
             });
 
             socket.on('disconnect', function(){

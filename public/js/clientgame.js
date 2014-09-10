@@ -66,6 +66,10 @@ console.log(gameroom);
 
 socket.emit('joinroom', gameroom);
 
+socket.on('gamemove', function(move){
+    console.log(move);
+});
+
 $('body').on('mouseenter', '#board', mouseenter);
 $('body').on('mousemove','#board', mousemove);
 
