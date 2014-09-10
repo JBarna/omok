@@ -16,11 +16,11 @@ var connectHelper = function(collectionName, next){
 /*public retreive board object with gameID*/
 exports.getGame = function(gameID, next){
     connectHelper('game', function(err, collection){
-        collection.findOne({'gameID': gameID}, {'board': 1, '_id': 0}, function(err, item){
+        collection.findOne({'gameID': gameID}/*, {'board': 1, '_id': 0}*/, function(err, item){
             /*console.log("item: ");
             console.log(item);*/
             if (item)
-                next(err, item.board);
+                next(err, item);
             else
                 next(err, null);
         });
@@ -30,7 +30,7 @@ exports.getGame = function(gameID, next){
 /*public create game method*/
 exports.createGame = function(gameID, boardArray, multiplayer){
     connectHelper('game', function(err, collection){
-        var newGame = {'gameID': gameID, 'board': boardArray, 'multiplayer': multiplayer, 'numPlayers': 1};
+        var newGame = {'gameID': gameID, 'board': boardArray, 'multiplayer': multiplayer, 'numPlayers': 0};
         var options = {w:1};
         collection.insert(newGame, options, function(err, results){
             //console.log(results);
@@ -39,10 +39,10 @@ exports.createGame = function(gameID, boardArray, multiplayer){
 }
 
 /*public save game method*/
-exports.saveGame = function(gameID, boardArray){
+exports.saveGame = function(gameID, update){
     connectHelper('game', function(err, collection){
         var query = {'gameID': gameID};
-        var update = { '$set': {'board': boardArray}};
+        /*var update = { '$set': {'board': boardArray*/ //replace this with the update that's passed in
         var options = {w:1, wtimeout:5000, upsert:false};
         collection.update(query, update, options, function(err, results){
             console.log(results);

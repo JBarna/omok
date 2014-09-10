@@ -49,6 +49,25 @@ exports.checkGameExistence = function(gameID, ifyes, ifno){
     });
 };
 
+/*Check # of players in game---------------------------------
+check db to find the number of players in the game
+*/
+exports.checkNumOfPlayers = function(gameID, callback){
+    dbhelper.getGame(gameID, function(err, game){
+        if(callback)
+            callback(game.numPlayers);
+    });
+};
+
+/*AddPlayerToGame--------------------------------------------
+update the database to add one player
+*/
+exports.addPlayerToGame = function(gameID){
+    var update = {'$inc' : {'numPlayers': 1}};
+    dbhelper.saveGame(gameID, update);
+    
+}
+
 
 
 
