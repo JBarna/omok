@@ -7,7 +7,7 @@ router.get('/', function(req, res) {
 });
 
 /*Clear session*/
-router.get('/clear', function(req, res){
+router.get('/c', function(req, res){
     req.session.destroy();
     res.redirect('/');
 });

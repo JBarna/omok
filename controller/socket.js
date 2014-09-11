@@ -17,17 +17,17 @@ exports.gameroom = function(io){
                         socket.gameattributes.playerID = num + 1;
                         //update the database to the correct number of players
                         model.addPlayerToGame(room);
-                    }
+                    } 
+                        
                 });
                     
             });
             
             
             socket.on('gamemove', function(move){
-                console.log(move);
                 //emit the move to all the players
-                //io.to(gameid).emit('gamemove', {'PlayerID': req.session.playerID, 'data': move});
-                io.to(socket.room).emit('gamemove', {'playerID': socket.gameattributes.playerID,
+                if (socket.gameattributes.playerID)
+                    io.to(socket.room).emit('gamemove', {'playerID': socket.gameattributes.playerID,
                                                     'move': move});
             });
 

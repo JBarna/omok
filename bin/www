@@ -3,5 +3,5 @@ var debug = require('debug')('create');
 var app = require('../app');
 
 var server = app.listen(process.env.PORT || 3000, function() {
-  debug('http server listening on port ' + process.env.PORT);
+  debug('http server listening on port ' + server.address().port);
 });
