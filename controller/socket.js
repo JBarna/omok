@@ -17,6 +17,10 @@ exports.gameroom = function(io){
                         socket.gameattributes.playerID = num + 1;
                         //update the database to the correct number of players
                         model.addPlayerToGame(room);
+                        //tell the client which piece they are
+                        io.to(socket.id).emit('gamedata', {'type': 'myPiece',
+                                                     'data': 
+                                                     socket.gameattributes.playerID});
                         
                     } 
                 });
@@ -25,10 +29,6 @@ exports.gameroom = function(io){
                     io.to(socket.room).emit('gamedata', {'type': 'gamepiece',
                                                          'data': {'1': boardType.split(' & ')[0], 
                                                          '2': boardType.split(' & ')[1]}});
-                    //tell the client which piece they are
-                    io.to(socket.id).emit('gamedata', {'type': 'myPiece',
-                                                     'data': 
-                                                     socket.gameattributes.playerID});
                 });
             });
             
