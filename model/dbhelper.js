@@ -28,9 +28,10 @@ exports.getGame = function(gameID, next){
 }
 
 /*public create game method*/
-exports.createGame = function(gameID, boardArray, multiplayer){
+exports.createGame = function(gameID, boardType, boardArray, multiplayer){
     connectHelper('game', function(err, collection){
-        var newGame = {'gameID': gameID, 'board': boardArray, 'multiplayer': multiplayer, 'numPlayers': 0};
+        var newGame = {'gameID': gameID, 'boardType': boardType,
+                       'board': boardArray, 'multiplayer': multiplayer, 'numPlayers': 0};
         var options = {w:1};
         collection.insert(newGame, options, function(err, results){
             //console.log(results);
@@ -42,10 +43,11 @@ exports.createGame = function(gameID, boardArray, multiplayer){
 exports.saveGame = function(gameID, update){
     connectHelper('game', function(err, collection){
         var query = {'gameID': gameID};
-        /*var update = { '$set': {'board': boardArray*/ //replace this with the update that's passed in
+        /*var update = { '$set': {'board': boardArray*/ 
+        //replace this with the update that's passed in
         var options = {w:1, wtimeout:5000, upsert:false};
         collection.update(query, update, options, function(err, results){
-            console.log(results);
+            //console.log(results);
         });
     });
 

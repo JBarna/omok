@@ -14,7 +14,7 @@ Create unique token
 create game board
 place game board in db
 return */
-exports.createGame = function(){
+exports.createGame = function(boardType){
     //create random ID
     var ID = 'xxxxxxxx'.replace(/[xy]/g, function(c) {
         var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
@@ -27,7 +27,7 @@ exports.createGame = function(){
     var board = game.getBoard();
     
     //save board in database
-    dbhelper.createGame(ID, board, true);
+    dbhelper.createGame(ID, boardType, board, true);
     
     return ID;
 };
@@ -66,6 +66,15 @@ exports.addPlayerToGame = function(gameID){
     var update = {'$inc' : {'numPlayers': 1}};
     dbhelper.saveGame(gameID, update);
     
+}
+
+/*Get Board Type---------------------------------------------
+return the board type of a game ID
+*/
+exports.getBoardType = function(gameID, callback){
+    dbhelper.getGame(gameID, function(err, game){
+        callback(game.boardType);
+    });
 }
 
 

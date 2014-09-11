@@ -11,8 +11,9 @@ var model = require('../model/model.js');
 Client wants to create a game.*/
 router.post('/creategame', function(req, res){
     
+    console.log(req.body.gameboard);
     //use model to create game and get ID
-    var ID = model.createGame();
+    var ID = model.createGame(req.body.gameboard);
     
     //update session so the player is in game
     req.session.ingame = true;

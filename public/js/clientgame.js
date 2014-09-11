@@ -1,19 +1,9 @@
 //Global Variables
 var myTurn = true;
-var gamemoveX;
-var gamemoveY;
-var gameroom;
 var socket;
+var gameData = {};
     
 /*Private Helper Functions*/
-var snapToGrid = function(x, y){
-    
-
-    gamemoveX = xLoc;
-    gamemoveY = yLoc;
-    /*the 30 and 27 are the offset for the space before the grid in the picture*/
-    return [xLoc * gridsize + 30, yLoc * gridsize + 27];
-}
 
 var coordToGrid = function(event){
     //offset of the top left corner of the board div to the
@@ -46,21 +36,34 @@ var GridToSnapCoord = function(x,y){
     var gridsize = 24;
     return {'xLoc': x * gridsize + 19 + xOff, 'yLoc': y * gridsize + 16 + yOff};
 }
+
+var createPiece = function(playerID){
+    var $hoverpiece = $('<img class="gamepiece" src="/images/' + gameData.gamepiece[gameData.myPiece] + '.png" />');
     
+    return $hoverpiece;
+}
+
 var createCursorPiece = function(){
-    var $hoverpiece = $('<img class="gamepiece tempPiece" src="/images/blocktopus.png" />');
+    $hoverpiece = createPiece(1);
+    $hoverpiece.addClass('tempPiece');
     $('#board').append($hoverpiece);
 }
 
-var placeGamePiece = function(x,y){
+var removeCursorPiece = function(){
+    if ($('#board img:last-child').hasClass('tempPiece'))
+        $('#board img:last-child').remove();
+}
+
+var placeGamePiece = function(playerID, x,y){
     var cursorPieceExists = $('#board img:last-child').hasClass('tempPiece');
     
-    if(!cursorPieceExists)
-        createCursorPiece();
-
+    var $piece = createPiece(playerID);
+    if (cursorPieceExists)
+        removeCursorPiece();
+    $('#board').append($piece);
+    
     $('#board img:last-child').css('left', x);
     $('#board img:last-child').css('top', y);
-    $('#board img:last-child').removeClass('tempPiece');
 
     if(cursorPieceExists)
         createCursorPiece();
@@ -101,7 +104,12 @@ socket.emit('joinroom', window.location.pathname.split('/')[2]);
 socket.on('gamemove', function(data){
     console.log(data);
     var coord = GridToSnapCoord(data.move.moveX, data.move.moveY);
-    placeGamePiece(coord.xLoc, coord.yLoc);
+    placeGamePiece(data.playerID, coord.xLoc, coord.yLoc);
+});
+
+socket.on('gamedata', function(data){
+    gameData[data.type] = data.data;
+    console.log(gameData);
 });
 
 //add events to our body which act on board
