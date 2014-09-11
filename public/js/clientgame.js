@@ -38,13 +38,13 @@ var GridToSnapCoord = function(x,y){
 }
 
 var createPiece = function(playerID){
-    var $hoverpiece = $('<img class="gamepiece" src="/images/' + gameData.gamepiece[gameData.myPiece] + '.png" />');
+    var $hoverpiece = $('<img class="gamepiece" src="/images/' + gameData.gamepiece[playerID] + '.png" />');
     
     return $hoverpiece;
 }
 
 var createCursorPiece = function(){
-    $hoverpiece = createPiece(1);
+    $hoverpiece = createPiece(gameData.myPiece);
     $hoverpiece.addClass('tempPiece');
     $('#board').append($hoverpiece);
 }
