@@ -34,10 +34,26 @@ exports.gameroom = function(io){
             
             
             socket.on('gamemove', function(move){
-                //emit the move to all the players
-                if (socket.gameattributes.playerID)
-                    io.to(socket.room).emit('gamemove', {'playerID': socket.gameattributes.playerID,
-                                                    'move': move});
+                if (socket.gameattributes.playerID){
+                    //check for issues on the move
+                    model.validateMove(socket.room, socket.gameattributes.playerID, move.moveX, move.moveY, function(moveData){
+                        if (moveData.moveSuccess){
+                            //emit the move to all the players
+                            io.to(socket.room).emit('gamemove', {'playerID': socket.gameattributes.playerID,
+                                                                'move': move});
+                            //if win
+                            if(moveData.win){
+                            //emit the win to the players
+                            io.to(socket.room).emit('win', {'win': moveData.win, 'playerID': socket.gameattributes.playerID});
+                            }
+
+                        } else{
+                            io.to(socket.id).emit('moveerr', {'error': moveData.moveError});
+                        }
+
+                    });
+                }
+                        
             });
 
             socket.on('disconnect', function(){

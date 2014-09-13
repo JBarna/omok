@@ -114,6 +114,16 @@ function Game(){
         gameData[data.type] = data.data;
         console.log(gameData);
     });
+    
+    socket.on('win', function(data){
+        console.log("Win!");
+        console.log(data);
+    });
+    
+    socket.on('moveerr', function(data){
+        console.log("moveerr!");
+        console.log(data)
+    });
 
     //add events to our body which act on board
     $('body').on('mouseenter', '#board', mouseenter);

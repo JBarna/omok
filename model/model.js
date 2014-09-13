@@ -86,5 +86,47 @@ specific callback
 /*exports.removeGameDueToDisconnect = function(gameID, wait, remove_callback, exist_callback){
     var */
 
+/*validateMove-------------------------------------------------
+will check the move to see if
+there's already another piece on the board, 
+double threes, 
+or win*/
+exports.validateMove = function(gameID, playerID, x, y, callback){
+    dbhelper.getGame(gameID, function(err, game){
+        
+        //set up variables
+        var servergame = new Game();
+        servergame.loadBoard(game.board);
+        var dataToReturn = {"moveSuccess": true, "moveError": "", "win": false };
+        
+        if (servergame.checkMoveAvailibility(x,y)){
+            //check win
+            if (servergame.checkWin(x, y, playerID))
+                dataToReturn.win = true;
+            else {
+                if(servergame.checkDoubleThrees(x, y, playerID)){
+                    dataToReturn.moveSuccess = false;
+                    dataToReturn.moveError = "Cannot create double threes";
+                }
+            }
+            
+        } else {
+            dataToReturn.moveSuccess = false;
+            dataToReturn.moveError = "Space already taken";
+        }
+        
+        //if no issue, make the move
+        if(dataToReturn.moveSuccess){
+            servergame.makeMove(x, y, playerID);
+            //put back into the database
+            var update = { '$set': {'board': servergame.getBoard()}};
+            dbhelper.saveGame(gameID, update);
+        }
+        
+        callback(dataToReturn);
+    });
+};
     
-    
+            
+            
+            

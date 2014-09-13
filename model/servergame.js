@@ -46,8 +46,13 @@ function Board() {
         board[y][x] = playerID;
     }
     
+    
+    this.checkMoveAvailibility = function(x, y){
+        return (board[y][x] == 0);
+    }
+    
     this.checkDoubleThreesHelper = function(playerID, pieceCount, spaceCount, x, y, i, j){
-        console.log("PID: " + playerID + " pieceC: " + pieceCount + " spaceC: " + spaceCount + " x: " + x + " y: " + y + " i: " + i + " j: " + j);
+/*        console.log("PID: " + playerID + " pieceC: " + pieceCount + " spaceC: " + spaceCount + " x: " + x + " y: " + y + " i: " + i + " j: " + j);*/
         if (i == 0 && j == 0)
             return 0;
         
@@ -88,7 +93,7 @@ function Board() {
             }
         }
         //threes += this.checkDoubleThreesHelper(playerID, 0, 0, x, y - 1, 0, -1);
-        console.log(threes);
+        
         return (threes > 1)
     }
     
