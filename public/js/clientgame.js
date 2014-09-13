@@ -7,7 +7,16 @@ function Game(){
     var gameData = {};
 
     /*Private Helper Functions*/
-
+    var toggleMyTurn = function(){
+        if (myTurn){
+            myTurn = false;
+            $('#turn').text("Their turn");
+        } else{
+            myTurn = true;
+            $('#turn').text("Your turn");
+        }
+    }
+    
     var coordToGrid = function(event){
         //offset of the top left corner of the board div to the
         //top left corner of the window
@@ -92,9 +101,9 @@ function Game(){
 
     var click = function(event){
         if (myTurn){
-            //myTurn = false;
             var gridCoord = coordToGrid(event);
-            socket.emit('gamemove', {moveX: gridCoord.xLoc, moveY: gridCoord.yLoc});     
+            socket.emit('gamemove', {moveX: gridCoord.xLoc, moveY: gridCoord.yLoc});
+            $('#moveerr').text("");
         }
     }
 
@@ -106,23 +115,29 @@ function Game(){
 
     socket.on('gamemove', function(data){
         console.log(data);
+        toggleMyTurn();
         var coord = GridToSnapCoord(data.move.moveX, data.move.moveY);
         placeGamePiece(data.playerID, coord.xLoc, coord.yLoc);
     });
 
     socket.on('gamedata', function(data){
         gameData[data.type] = data.data;
-        console.log(gameData);
+        if (gameData.myPiece == 2){
+            myTurn = false;
+            $('#turn').text("Their turn");
+        }
     });
     
     socket.on('win', function(data){
-        console.log("Win!");
-        console.log(data);
+        $('#moveerr').text("Win!!!");
     });
     
     socket.on('moveerr', function(data){
-        console.log("moveerr!");
-        console.log(data)
+        console.log(data);
+        
+        //put into error paragraph
+        $('#moveerr').text(data.error);
+        
     });
 
     //add events to our body which act on board
