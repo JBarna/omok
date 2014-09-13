@@ -10,7 +10,7 @@ exports.gameroom = function(io){
             socket.on('joinroom', function(room){
                 socket.room = room;
                 socket.join(room);
-                
+                console.log('id: ' + socket.id);
                 //set player id
                 model.checkNumOfPlayers(room, function(num){    
                     if (num < 2){

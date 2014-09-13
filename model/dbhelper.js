@@ -11,7 +11,7 @@ var connectHelper = function(collectionName, next){
             setTimeout(function(){ db.close(); }, 1000);
         });
     });
-}
+};
 
 /*public retreive board object with gameID*/
 exports.getGame = function(gameID, next){
@@ -25,7 +25,7 @@ exports.getGame = function(gameID, next){
                 next(err, null);
         });
     });
-}
+};
 
 /*public create game method*/
 exports.createGame = function(gameID, boardType, boardArray, multiplayer){
@@ -37,7 +37,19 @@ exports.createGame = function(gameID, boardType, boardArray, multiplayer){
             //console.log(results);
         });
     });
-}
+};
+
+/*public delete game method*/
+exports.deleteGame = function(gameID){
+    connectHelper('game', function(err, collection){
+        var query = {'gameID': gameID};
+        var options = {'w': 1};
+        collection.remove(query, options, function(err, results){
+            console.log(results);
+        });
+    });
+};
+            
 
 /*public save game method*/
 exports.saveGame = function(gameID, update){
@@ -50,6 +62,5 @@ exports.saveGame = function(gameID, update){
             //console.log(results);
         });
     });
-
-}
+};
             

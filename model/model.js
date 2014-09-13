@@ -77,8 +77,14 @@ exports.getBoardType = function(gameID, callback){
     });
 }
 
-
-
+/*removeGameDueToDisconnect------------------------------------
+after a certain amount of time,
+check to see if both players are still there.
+If not, delete the game and call the 
+specific callback
+*/
+/*exports.removeGameDueToDisconnect = function(gameID, wait, remove_callback, exist_callback){
+    var */
 
     
     

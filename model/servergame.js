@@ -46,36 +46,96 @@ function Board() {
         board[y][x] = playerID;
     }
     
-    this.checkWinHelper = function( playerID,  count,  i,  j,  k,  l){
-        if (count == 1)
-            return true;
+    this.checkDoubleThreesHelper = function(playerID, pieceCount, spaceCount, x, y, i, j){
+        console.log("PID: " + playerID + " pieceC: " + pieceCount + " spaceC: " + spaceCount + " x: " + x + " y: " + y + " i: " + i + " j: " + j);
+        if (i == 0 && j == 0)
+            return 0;
         
-        if (k == 0 && l == 0)
-            return false;
+        //check boundaries
+        if (x < 0 || x > 14 || y < 0 || y > 14)
+            return 0;
         
-        if (board[i + k][j + l] == playerID){
-            i = i + k;
-            j = j + l;
-            count--;
-            return this.checkWinHelper(playerID, count, i, j, k, l);
-        } else
-            return false;
+        
+        
+        if (board[y][x] == playerID){
+            pieceCount++;
+            
+            //if we have more than two others pieces
+            if (pieceCount > 2)
+                return 0;
+                
+        } else if(board[y][x] == 0){
+            if (pieceCount == 2)
+                return 1;
+            else if(spaceCount > 0)
+                return 0;
+            else
+                spaceCount++;
+        } else //the other player's piece is there
+            return 0;
+        
+        x = x + i;
+        y = y + j;
+        
+        return this.checkDoubleThreesHelper(playerID, pieceCount, spaceCount, x, y, i, j);
     }
                         
-    this.checkWin = function(){
-        for (var i = 0; i < board.length; i++){
-            for (var j = 0; j < board[i].length; j++){
-                if (board[i][j] == 1 || board[i][j] == 2){
-                    for (var k = -1; k <= 1; k++){
-                        for (var l = -1; l <= 1; l++){
-                            if (this.checkWinHelper(board[i][j], 5, i, j, k, l)){
-                                console.log("Win!");
-                            }
-                        }
-                    }   
-                }
+    this.checkDoubleThrees = function(x, y, playerID){
+        var threes = 0;
+        for (var i = -1; i <= 1; i++){
+            for (var j = -1; j <= 1; j++){
+                threes += this.checkDoubleThreesHelper(playerID, 0, 0, x + i, y + j, i, j);
             }
         }
+        //threes += this.checkDoubleThreesHelper(playerID, 0, 0, x, y - 1, 0, -1);
+        console.log(threes);
+        return (threes > 1)
+    }
+    
+    
+    this.checkWinHelper = function(playerID, count, x, y, i , j){
+        
+        if (x < 0 || x > 14 || y < 0 || y > 14)
+            return count;
+        
+        if (board[y][x] == playerID){
+            count++;
+            x = x + i;
+            y = y + j;
+            return this.checkWinHelper(playerID, count, x, y, i, j);
+        } else
+            return count;
+    }
+        
+        
+    this.checkWin = function(x, y, playerID){
+        
+        var i = 1;
+        var j = -1;
+        //check upper right corner
+        if((this.checkWinHelper(playerID, 0, x + i, y + j, i, j) + 
+            this.checkWinHelper(playerID, 0, x - i, y - j, -i, -j)) == 4)
+            return true;
+        
+        //check right
+        i = 1; j = 0;
+        if((this.checkWinHelper(playerID, 0, x + i, y + j, i, j) + 
+            this.checkWinHelper(playerID, 0, x - i, y - j, -i, -j)) == 4)
+            return true;
+        
+        //check bottom right
+        i = 1; j = 1;
+        if((this.checkWinHelper(playerID, 0, x + i, y + j, i, j) + 
+            this.checkWinHelper(playerID, 0, x - i, y - j, -i, -j)) == 4)
+            return true;
+        
+        //check underneath
+        i = 0; j = 1;
+        if((this.checkWinHelper(playerID, 0, x + i, y + j, i, j) + 
+            this.checkWinHelper(playerID, 0, x - i, y - j, -i, -j)) == 4)
+            return true
+            
+        return false;
     }
 }
 

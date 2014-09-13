@@ -1,22 +1,37 @@
 var Game = require('./servergame.js');
-var game = new Game();
+var board = new Game();
 
-var board = game.board;
-console.log(board.getBoard());
+board.createBoard();
 
-var boardarray = board.getBoard();
 
-boardarray[2][4] = 3;
-console.log(boardarray);
+/*Check win*/
+/*board.makeMove(3, 0, 2);
+board.makeMove(4,0, 2);
+board.makeMove(5,0, 2);
+board.makeMove(6,0, 2);
+board.makeMove(7,0, 2);
 
-board.loadBoard(boardarray);
 board.printBoard();
-/*board.makeMove(3, 1, 2);
-board.makeMove(4,1, 2);
-board.makeMove(5,1, 2);
-board.makeMove(6,1, 2);
-board.makeMove(7,1, 2);
-board.printBoard();
-board.checkWin();
+console.log(board.checkWin(2, 2, 2));
 
-console.log(board);*/
+*/
+
+/*check threes*/
+board.makeMove(2, 2, 2);
+board.makeMove(2, 3, 2);
+
+board.makeMove(3, 5, 2);
+board.makeMove(4, 5, 2);
+
+board.makeMove(3, 6, 2);
+board.makeMove(4, 7, 2);
+
+board.makeMove(0, 5, 2);
+board.makeMove(1, 5, 2);
+
+
+console.log(board.checkDoubleThrees(2, 5, 2));
+board.printBoard();
+
+
+
